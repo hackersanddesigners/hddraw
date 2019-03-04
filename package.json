@@ -1,0 +1,17 @@
+{
+  "name": "hddraw",
+  "version": "1.0.0",
+  "description": "Simple drawing application for the toyhacking installation in OpenLabs Dublin",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Heerko van der Kooij / heerko@hackersanddesigner.nl",
+  "license": "ISC",
+  "devDependencies": {
+    "grunt": "^1.0.3",
+    "grunt-contrib-jshint": "^2.0.0",
+    "grunt-contrib-watch": "^1.1.0",
+    "load-grunt-tasks": "^4.0.0"
+  }
+}

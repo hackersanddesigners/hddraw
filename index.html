@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Simple Drawing Application</title>
+	<link rel="stylesheet" href="css/style.css" type="text/css" media="screen" title="no title" charset="utf-8">
+</head>
+<body>
+	<img id="cursor" src="img/cursor.png" draggable="false" />
+	<canvas	width="600" height="400"></canvas>
+	<div class="explanation">
+	Click + move mouse to draw.<br />
+	Or, use ⬆️➡️⬇️⬅️ and SPACE to click.<br />
+	1-6: line width<br />
+	a-e: red, green, blue, black, white<br />
+	q: clear, s: download
+	</div>
+	<a id="download">download</a>
+	<script src="//code.jquery.com/jquery-1.11.0.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/app.js" type="text/javascript" charset="utf-8"></script>
+
+</body>
+</html>
