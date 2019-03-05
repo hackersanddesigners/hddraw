@@ -1,5 +1,6 @@
 var CursorDrawing = ( function( $ ) {
 	var my = {};
+	var size = {};
 
 	/*******************************
 	*            CURSOR
@@ -12,22 +13,29 @@ var CursorDrawing = ( function( $ ) {
 		var speed = 5;
 		var $cursor;
 		var drawing = false;
+		var width = 0, height = 0;
 
 		/** initalisation */
 		function init(){
-			var $win = $( window );
-			var w = $win.width();
-			var h = $win.height();
-			x = w / 2;
-			y = h / 2;
+			onResize();
+			x = width / 2;
+			y = height / 2;
 			$cursor = $( '#cursor' );
 			window.requestAnimationFrame( draw );
+			$( window ).on( 'resize', onResize );
 		}
 		$( init ); // onReady
+
+		function onResize(){
+			var $win = $( window );
+			width = $win.width();
+			height = $win.height();
+		}
 
 		function draw( timestamp ) {
 			x += speedX * speed;
 			y += speedY * speed;
+			constrainToCanvas();
 
 			$cursor.css( {
 				'transform': 'translate(' + x + 'px, ' + y + 'px)'
@@ -41,6 +49,7 @@ var CursorDrawing = ( function( $ ) {
 		my.setCursor = function( _x, _y ){
 			x = _x;
 			y = _y;
+			constrainToCanvas();
 		};
 
 		my.getCursor = function(){
@@ -63,6 +72,21 @@ var CursorDrawing = ( function( $ ) {
 				Canvas.stopLine();
 			}
 		};
+
+		function constrainToCanvas(){
+			if( x > width ){
+				x = width;
+			}
+			if( x < 0 ){
+				x = 0;
+			}
+			if( y > height ){
+				y = height;
+			}
+			if( y < 0 ){
+				y = 0;
+			}
+		}
 
 		return my;
 	} ( $ ) );
@@ -140,6 +164,7 @@ var CursorDrawing = ( function( $ ) {
 			var rect = canvas.getBoundingClientRect();
 			canvas.width = rect.width;
 			canvas.height = rect.height;
+
 		}
 
 		my.setColor = function( col ){
