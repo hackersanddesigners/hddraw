@@ -146,7 +146,10 @@ var CursorDrawing = ( function( $ ) {
 
 	var Canvas = ( function( $ ) {
 		var my = {};
-		var color = '#ff0000';
+		var colors = [ '#ff0000', '#00ff00', '#0000ff', '#ffffff', '#000000' ];
+		var curCol = 0;
+		var color;// = colors[ curCol ];
+
 		var size = 20;
 		var $canvas = $( "canvas" );
 		var canvas = $("canvas").get(0);
@@ -155,6 +158,7 @@ var CursorDrawing = ( function( $ ) {
 
 		/** initalisation */
 		function init(){
+			my.setColor( colors[ curCol ] );
 			onResize();
 			$( window ).resize( onResize );
 		}
@@ -169,13 +173,30 @@ var CursorDrawing = ( function( $ ) {
 
 		my.setColor = function( col ){
 			color = col;
+			$( '.line' ).css( 'backgroundColor', col );
 		};
+
+		my.nextColor = function(){
+			curCol = ( curCol + 1 ) % colors.length;
+			my.setColor( colors[ curCol ] );
+		}
+
+		my.nextSize = function(){
+			size += 10;
+			if( size > 100 ) size = 1;
+			my.setSize( size );
+		}
 
 		my.setSize = function( s ){
 			size = s;
+			$( '.line' ).css({
+				'width': s + 'px',
+				'height': s + 'px'
+			})
 		};
 
 		my.clear = function (){
+			my.download();
 			context.clearRect( 0, 0, context.canvas.width, context.canvas.height );
 		};
 
@@ -208,6 +229,12 @@ var CursorDrawing = ( function( $ ) {
 			link.click();
 		};
 
+		my.incSize = function( val ){
+			size += val;
+			if( size < 1 ) size = 1;
+			if( size > 100 ) size = 100;
+		}
+
 		return my;
 	} ( $ ) );
 
@@ -221,69 +248,11 @@ var CursorDrawing = ( function( $ ) {
 
 		/** initalisation */
 		function init(){
-			$( window ).keypress( onKeyPressed );
+			// $( window ).keypress( onKeyPressed );
 			$( window ).keydown( onKeyDown );
 			$( window ).keyup( onKeyUp );
 		}
 		$( init ); // onReady
-
-		function onKeyPressed( e ){
-			e = e || window.event;
-			switch( e.key ){
-				case 'a':
-				Canvas.setColor( '#FF0000' );
-				break;
-
-				case 'b':
-				Canvas.setColor( '#00ff00' );
-				break;
-
-				case 'c':
-				Canvas.setColor( '#0000ff' );
-				break;
-
-				case 'd':
-				Canvas.setColor( '#000000' );
-				break;
-
-				case 'e':
-				Canvas.setColor( '#ffffff' );
-				break;
-
-				case '1':
-				Canvas.setSize( 1 );
-				break;
-
-				case '2':
-				Canvas.setSize( 10 );
-				break;
-
-				case '3':
-				Canvas.setSize( 20 );
-				break;
-
-				case '4':
-				Canvas.setSize( 40 );
-				break;
-
-				case '5':
-				Canvas.setSize( 80 );
-				break;
-
-				case '6':
-				Canvas.setSize( 120 );
-				break;
-
-				case 'q':
-				Canvas.clear();
-				break;
-
-				case 's':
-				Canvas.download();
-				break;
-
-			}
-		}
 
 		function onKeyDown( e ){
 			e = e || window.event;
@@ -327,6 +296,26 @@ var CursorDrawing = ( function( $ ) {
 				case 32: // space
 				Cursor.setDraw( false );
 				break;
+			}
+			console.log( e.keyCode, e.key );
+			switch( e.key ){
+				case 'a':
+				Canvas.nextColor();
+				break;
+
+				case 'b':
+				Canvas.nextSize();
+				break;
+
+				case 'c':
+				case 'q': // q for backward compatibilty (or the guitar wont work...)
+				Canvas.clear();
+				break;
+
+				case 's':
+				Canvas.download();
+				break;
+
 			}
 		}
 
