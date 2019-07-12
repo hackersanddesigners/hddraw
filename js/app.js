@@ -161,6 +161,7 @@ var CursorDrawing = ( function( $ ) {
 			my.setColor( colors[ curCol ] );
 			onResize();
 			$( window ).resize( onResize );
+			my.clear( false );
 		}
 		$( init ); // onReady
 
@@ -195,9 +196,11 @@ var CursorDrawing = ( function( $ ) {
 			})
 		};
 
-		my.clear = function (){
-			my.download();
-			context.clearRect( 0, 0, context.canvas.width, context.canvas.height );
+		my.clear = function ( download ){
+			if( download ) my.download();
+			context.clearRect( 0, 0, canvas.width, canvas.height );
+			context.fillStyle = '#ff00ff';
+			context.fillRect(0, 0, canvas.width, canvas.height);
 		};
 
 		my.startLine = function (){
@@ -309,7 +312,7 @@ var CursorDrawing = ( function( $ ) {
 
 				case 'c':
 				case 'q': // q for backward compatibilty (or the guitar wont work...)
-				Canvas.clear();
+				Canvas.clear( true );
 				break;
 
 				case 's':
